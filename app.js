@@ -2,9 +2,11 @@ var express = require('express')
   , routes  = require('./routes')
   , user    = require('./routes/user')
   , task    = require('./routes/task')
+  , subtask = require('./routes/subtask')
   , http    = require('http')
   , path    = require('path')
   , db      = require('./models')
+  , api     = require('./api/v0');
  
 var app = express()
  
@@ -15,6 +17,7 @@ app.set('view engine', 'jade')
 app.use(express.favicon())
 app.use(express.logger('dev'))
 app.use(express.json())
+app.use(express.bodyParser())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
 app.use(app.router)
@@ -26,9 +29,15 @@ if ('development' === app.get('env')) {
 }
  
 app.get('/', routes.index)
+app.get('/user',api.user.get);
+app.post('/user',api.user.post);
+
+
+
 app.post('/users/create', user.create)
 app.post('/users/:user_id/tasks/create', task.create)
 app.get('/users/:user_id/tasks/:task_id/destroy', task.destroy)
+app.post('/users/:user_id/tasks/:task_id/subtasks/create', subtask.create)
  
 db
   .sequelize

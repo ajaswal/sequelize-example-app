@@ -1,12 +1,12 @@
 module.exports = function(sequelize, DataTypes) {
-  var Task = sequelize.define('Task', {
+
+	var SubTask = sequelize.define('SubTask', {
     title: DataTypes.STRING
   }, {
     associate: function(models) {
-      Task.belongsTo(models.User)
-      Task.hasMany(models.SubTask)
+      SubTask.belongsTo(models.Task)
     }
   })
  
-  return Task
+  return SubTask
 }
